@@ -48,6 +48,7 @@ export const RegisterForm = () => {
             onChange={(e) => setName(e.target.value)}
             id="name"
             label="Nome"
+            type="text"
             variant="outlined"
             required
           />
@@ -55,6 +56,7 @@ export const RegisterForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             id="email"
             label="E-mail"
+            type="email"
             variant="outlined"
             required
           />

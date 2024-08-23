@@ -52,6 +52,7 @@ export const LoginForm = () => {
             id="email"
             label="E-mail"
             variant="outlined"
+            type="email"
             required
           />
           <styles.TextField

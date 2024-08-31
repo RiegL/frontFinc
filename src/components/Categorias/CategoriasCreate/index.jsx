@@ -6,69 +6,56 @@ import { useState } from "react";
 import axios from "axios";
 import { Snackbar, Alert } from "@mui/material";
 
-export const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export const CategoriasCreate = () => {
+  const [nome, setNome] = useState("");
   const [alertMessage, setAlertMessage] = useState({
     show: false,
     message: "",
     severity: "",
   });
-  // const [alertSeverity, setAlertSeverity] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
-        email,
-        password,
-      });
-  
-      console.log('Response aqui :', response.data.data.token); // Verifique o que está sendo retornado
-  
-      localStorage.setItem("token", response.data.data.token);
-       // Verifique se o token foi salvo
-  
+      const token = localStorage.getItem('token');
+      await axios.post(
+        "http://localhost:8080/categorias",
+        { nome },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setAlertMessage({
         show: true,
-        message: "Login realizado com sucesso!",
+        message: "Categoria criada com sucesso!",
         severity: "success",
       });
     } catch (error) {
-      console.error("Erro ao logar", error.message);
+      console.error("Erro ao criar categoria", error.message);
       setAlertMessage({
         show: true,
-        message: 'Erro ao Logar - Por favor, verifique seu email e senha.',
+        message: "Erro ao criar categoria",
         severity: "error",
       });
     }
   };
 
-
   return (
     <>
       <styles.Form onSubmit={handleSubmit}>
         <Stack gap={1}>
-          <styles.h1>Login</styles.h1>
+          <styles.h1>Criar uma categoria</styles.h1>
           <styles.TextField
-            onChange={(e) => setEmail(e.target.value)}
-            id="email"
-            label="E-mail"
+            onChange={(e) => setNome(e.target.value)}
+            id="categoria"
+            label="Categoria"
             variant="outlined"
-            type="email"
-            required
-          />
-          <styles.TextField
-            onChange={(e) => setPassword(e.target.value)}
-            id="password"
-            label="Senha"
-            variant="outlined"
-            type="password"
+            type="text"
             required
           />
           <Stack alignItems={"center"}>
             <styles.Button color="success" type="submit" variant="contained">
-              Entrar
+              Criar
             </styles.Button>
           </Stack>
         </Stack>
@@ -76,10 +63,10 @@ export const LoginForm = () => {
       <Snackbar
         open={alertMessage.show}
         autoHideDuration={6000}
-        onClose={() => setAlertMessage("")}
+        onClose={() => setAlertMessage({ ...alertMessage, show: false })}
       >
         <Alert
-          onClose={() => setAlertMessage("")}
+          onClose={() => setAlertMessage({ ...alertMessage, show: false })}
           severity={alertMessage.severity}
           sx={{ width: "100%" }}
         >
@@ -90,4 +77,4 @@ export const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default CategoriasCreate;

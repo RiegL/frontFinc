@@ -30,7 +30,7 @@ export const TransacoesUpdate = ({ metaId }) => {
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);
     return date.toISOString().split("T")[0]; // Retorna apenas a parte da data no formato 'YYYY-MM-DD'
-  };
+  }; // Formatando a data para o padrão 'YYYY-MM-DD'
 
   useEffect(() => {
     const getMeta = async () => {
@@ -42,17 +42,16 @@ export const TransacoesUpdate = ({ metaId }) => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
+        console.log("PEGANDO TRANSACÃO ->", response.data.data);
         setDescricao(response.data.data.descricao);
         setValor(response.data.data.valor);
         setDataTransacao(formatDate(response.data.data.data));
         setIdTransacoes(response.data.data.id);
         setUserId(response.data.data.user_id);
-
-        setAlertMessage({
-          message: "Categoria buscada com sucesso!",
-          type: "success",
-        });
+        // setAlertMessage({
+        //   message: "Categoria buscada com sucesso!",
+        //   type: "success",
+        // });
       } catch (error) {
         console.error("Erro ao buscar transação", error.message);
         setAlertMessage({
@@ -63,7 +62,7 @@ export const TransacoesUpdate = ({ metaId }) => {
       }
     };
     getMeta();
-  }, [metaId]);
+  }, [metaId]); // PEGANDO transaçoes ao carregar
 
   useEffect(() => {
     const getCategorias = async () => {
@@ -90,17 +89,7 @@ export const TransacoesUpdate = ({ metaId }) => {
       }
     };
     getCategorias();
-  }, []);
-
-  useEffect(() => {
-    if (alertMessage) {
-      const timer = setTimeout(() => {
-        setAlertMessage(null);
-      }, 6000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [alertMessage]);
+  }, []); // pegando categorias para poder atualizar
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,7 +115,17 @@ export const TransacoesUpdate = ({ metaId }) => {
         type: "error",
       });
     }
-  };
+  }; // enviando dados para atualizar a transação
+
+  useEffect(() => {
+    if (alertMessage) {
+      const timer = setTimeout(() => {
+        setAlertMessage(null);
+      }, 6000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
 
   return (
     <>

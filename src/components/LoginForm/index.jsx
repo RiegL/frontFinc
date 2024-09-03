@@ -5,6 +5,7 @@ import * as styles from "./style";
 import { useState } from "react";
 import axios from "axios";
 import { Snackbar, Alert } from "@mui/material";
+import { Label } from "@mui/icons-material";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -48,8 +49,7 @@ export const LoginForm = () => {
   return (
     <>
       <styles.Form onSubmit={handleSubmit}>
-        <Stack gap={1}>
-          <styles.h1>Login</styles.h1>
+        <Stack gap={5}>
           <styles.TextField
             onChange={(e) => setEmail(e.target.value)}
             id="email"
@@ -67,7 +67,7 @@ export const LoginForm = () => {
             required
           />
           <Stack alignItems={"center"}>
-            <styles.Button color="success" type="submit" variant="contained">
+            <styles.Button color="primary" type="submit" variant="contained">
               Entrar
             </styles.Button>
           </Stack>

@@ -6,7 +6,7 @@ import { Stack } from "@mui/material";
 export const LoginPage = () => {
   return (
     <Stack className={style.container}>
-      <Stack className={style.border} >
+      <Stack >
         <LoginForm />
       </Stack>
     </Stack>

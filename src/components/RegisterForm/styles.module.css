@@ -1,0 +1,12 @@
+.text{
+color: #999DA3;
+}
+
+.clickAqui{
+    color: #299D91;
+    text-decoration: none;
+}
+
+.clickAqui:hover{
+    color: #3ce309;
+}

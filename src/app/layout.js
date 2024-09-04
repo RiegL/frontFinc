@@ -2,6 +2,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { colors } from "@mui/material";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const theme = createTheme({
@@ -10,6 +12,12 @@ const theme = createTheme({
       main: "#299D91",
     },
   },
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'sans-serif'
+    ].join(','),
+  }
 });
 
 export default function RootLayout({ children }) {

@@ -4,7 +4,7 @@ import { Stack } from "@mui/material";
 export const RegisterPage = () => {
   return (
     <Stack className={style.container}>
-      <Stack className={style.border} >
+      <Stack >
         <RegisterForm />
       </Stack>
     </Stack>

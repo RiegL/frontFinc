@@ -29,13 +29,13 @@ export const DashboardPage = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      {/* <CategoriasCreate />   */}
+      <CategoriasCreate />  
       {/* <CategoriasUpdate categoriaId={1} /> */}
       {/* <MetasCreate /> */}
       {/* <MetasUpdate metaId={6}/> */}
       {/* <TransacoesCreate/> */}
-      <TransacoesUpdate metaId={9}/>
-      
+      {/* <TransacoesUpdate metaId={9}/> */}
+      <h1>teste</h1>
     </div>
   );
 };

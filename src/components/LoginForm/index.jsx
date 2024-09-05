@@ -6,8 +6,10 @@ import axios from "axios";
 import * as styles from "./style";
 import sx from './styles.module.css'
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -25,15 +27,9 @@ export const LoginForm = () => {
         password,
       });
 
-      console.log("Response:", response.data.data.token);
-
+      // console.log("Response:", response.data.data.token);
       localStorage.setItem("token", response.data.data.token);
-
-      setAlertMessage({
-        show: true,
-        message: "Login realizado com sucesso!",
-        severity: "success",
-      });
+      router.push("/dashboard");
     } catch (error) {
       console.error("Erro ao logar", error.message);
       setAlertMessage({

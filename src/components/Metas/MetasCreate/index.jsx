@@ -2,11 +2,45 @@
 
 import { Stack } from "@mui/material";
 import * as styles from "./style";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import axios from "axios";
 import { Snackbar, Alert } from "@mui/material";
+import * as React from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { NumericFormat } from "react-number-format";
+
+const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
+  props,
+  ref
+) {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumericFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="R$"
+    />
+  );
+});
 
 export const MetasCreate = () => {
+  const [open, setOpen] = React.useState(false);
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
   const [dataMeta, setDataMeta] = useState("");
@@ -19,10 +53,10 @@ export const MetasCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost:8080/metas",
-        { descricao, valor,data:dataMeta },
+        { descricao, valor, data: dataMeta },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -42,44 +76,98 @@ export const MetasCreate = () => {
     }
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  }; //abre o dialog
+
+  const handleClose = () => {
+    setOpen(false);
+  }; //fecha o dialog
+
   return (
     <>
       <styles.Form onSubmit={handleSubmit}>
-        <Stack gap={1}>
-          <styles.h1>Criar uma meta</styles.h1>
-          <styles.TextField
-            onChange={(e) => setDescricao(e.target.value)}
-            id="meta"
-            label="Meta"
-            variant="outlined"
-            type="text"
-            name="meta"
-            required
-          />
-          <styles.TextField
-            onChange={(e) => setValor(e.target.value)}
-            id="valor"
-            label="Valor"
-            variant="outlined"
-            type="text"
-            name="valor"
-            required
-          />
-          <styles.TextField
-            onChange={(e) => setDataMeta(e.target.value)}
-            id="dataMeta"
-            label="Data"
-            variant="outlined"
-            type="text"
-            name="dataMeta"
-            required
-          />
-          <Stack alignItems={"center"}>
-            <styles.Button color="success" type="submit" variant="contained">
+        <Button
+          variant="contained"
+          sx={{ width: "auto" }}
+          onClick={handleClickOpen}
+        >
+          Criar nova meta
+        </Button>
+        <Dialog
+          fullWidth
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            component: "form",
+            onSubmit: (event) => {
+              handleClose();
+            },
+          }}
+        >
+          <DialogTitle sx={{ textAlign: "center" }}>Nova meta</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="meta"
+              name="meta"
+              label="Meta"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setDescricao(e.target.value)}
+            />
+          </DialogContent>
+          <DialogContent>
+            {/* <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="valor"
+              name="valor"
+              label="Valor"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setValor(e.target.value)}
+            /> */}
+            <TextField
+            fullWidth
+              required
+              label="Valor"
+              name="valor"
+              id="formatted-numberformat-input"
+              InputProps={{
+                inputComponent: NumericFormatCustom,
+              }}
+              variant="standard"
+              onChange={(e) => setValor(e.target.value)}
+            />
+          </DialogContent>
+          <DialogContent>
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="data"
+              name="data"
+              type="date"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setDataMeta(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" color="error" onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button variant="contained" type="submit" color="primary">
               Criar
-            </styles.Button>
-          </Stack>
-        </Stack>
+            </Button>
+          </DialogActions>
+        </Dialog>
       </styles.Form>
       <Snackbar
         open={alertMessage.show}

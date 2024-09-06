@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { CategoriasCreate } from "../../../components/Categorias/CategoriasCreate";
 import { CategoriasUpdate } from "../../../components/Categorias/CategoriasUpdate";
@@ -11,6 +11,10 @@ import { TransacoesUpdate } from "../../../components/Transacoes/TransacoesUpdat
 
 export const DashboardPage = () => {
 
+  const [ user, setUser ] = useState({
+    id:null
+  });
+
     useEffect(() => {
         const token = localStorage.getItem("token"); 
         if (!token){ 
@@ -19,7 +23,7 @@ export const DashboardPage = () => {
         axios.get("http://localhost:8080/users/me", {
             headers: { Authorization: `Bearer ${token}` },
         }).then(response =>{
-            // console.log(response.data.data);
+          setUser(response.data.data);
         }).catch(error => {
             window.location.href = "/login";
         })
@@ -31,11 +35,10 @@ export const DashboardPage = () => {
       <h1>Dashboard</h1>
       <CategoriasCreate />  
       {/* <CategoriasUpdate categoriaId={1} /> */}
-      {/* <MetasCreate /> */}
+      <MetasCreate />
       {/* <MetasUpdate metaId={6}/> */}
       {/* <TransacoesCreate/> */}
       {/* <TransacoesUpdate metaId={9}/> */}
-      <h1>teste</h1>
     </div>
   );
 };

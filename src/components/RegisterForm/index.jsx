@@ -13,6 +13,7 @@ import { useState } from "react";
 import axios from "axios";
 import sx from "./styles.module.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
   const [email, setEmail] = useState("");
@@ -24,6 +25,7 @@ export const RegisterForm = () => {
     message: "",
     severity: "",
   });
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,9 +38,12 @@ export const RegisterForm = () => {
       localStorage.setItem("token", response.data.data.token);
       setAlertMessage({
         show: true,
-        message: "Usuário registrado com sucesso!",
+        message: "Usuário registrado com sucesso! Levando para o Login",
         severity: "success",
       });
+      setTimeout(() => {
+        router.push("/login");
+      },2000)
     } catch (error) {
       console.error("Erro ao registrar", error.message);
       setAlertMessage({

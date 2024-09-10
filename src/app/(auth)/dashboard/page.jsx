@@ -37,7 +37,7 @@ export const DashboardPage = () => {
       {/* <CategoriasUpdate categoriaId={1} /> */}
       <MetasCreate />
       {/* <MetasUpdate metaId={6}/> */}
-      {/* <TransacoesCreate/> */}
+      <TransacoesCreate/>
       {/* <TransacoesUpdate metaId={9}/> */}
     </div>
   );

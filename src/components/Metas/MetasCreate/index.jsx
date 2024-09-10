@@ -1,8 +1,6 @@
 "use client";
-
-import { Stack } from "@mui/material";
 import * as styles from "./style";
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Snackbar, Alert } from "@mui/material";
 import * as React from "react";
@@ -13,6 +11,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { NumericFormat } from "react-number-format";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from 'dayjs';
 
 const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
   props,
@@ -32,9 +34,10 @@ const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
           },
         });
       }}
-      thousandSeparator
+      thousandSeparator="."
+      decimalSeparator=","
       isNumericString
-      prefix="R$"
+      prefix="R$ "
     />
   );
 });
@@ -52,11 +55,14 @@ export const MetasCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const valorEmCentavos = valor * 100;
+
     try {
+      const formattedDate = dayjs(dataMeta).format('YYYY-MM-DD');
       const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost:8080/metas",
-        { descricao, valor, data: dataMeta },
+        { descricao, valor: valorEmCentavos, data: formattedDate },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -66,6 +72,9 @@ export const MetasCreate = () => {
         message: "Meta criada com sucesso!",
         severity: "success",
       });
+      setTimeout(() => {
+        setAlertMessage({ show: false });
+      },3000)
     } catch (error) {
       console.error("Erro ao criar Meta", error.message);
       setAlertMessage({
@@ -73,6 +82,9 @@ export const MetasCreate = () => {
         message: "Erro ao criar Meta",
         severity: "error",
       });
+      setTimeout(() => {
+        setAlertMessage({ show: false });
+      },3000)
     }
   };
 
@@ -121,20 +133,8 @@ export const MetasCreate = () => {
             />
           </DialogContent>
           <DialogContent>
-            {/* <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="valor"
-              name="valor"
-              label="Valor"
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={(e) => setValor(e.target.value)}
-            /> */}
             <TextField
-            fullWidth
+              fullWidth
               required
               label="Valor"
               name="valor"
@@ -146,18 +146,19 @@ export const MetasCreate = () => {
               onChange={(e) => setValor(e.target.value)}
             />
           </DialogContent>
-          <DialogContent>
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="data"
-              name="data"
-              type="date"
-              fullWidth
-              variant="standard"
-              onChange={(e) => setDataMeta(e.target.value)}
-            />
+          <DialogContent
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Data"
+                onChange={(newValue) => setDataMeta(newValue)}
+              />
+            </LocalizationProvider>
           </DialogContent>
           <DialogActions>
             <Button variant="contained" color="error" onClick={handleClose}>

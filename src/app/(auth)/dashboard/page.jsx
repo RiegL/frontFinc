@@ -25,6 +25,7 @@ export const DashboardPage = () => {
             headers: { Authorization: `Bearer ${token}` },
         }).then(response =>{
           setUser(response.data.data);
+         
         }).catch(error => {
             window.location.href = "/login";
         })
@@ -33,7 +34,7 @@ export const DashboardPage = () => {
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>Olá, {user.name}</h1>
       {/* <CategoriasCreate />   */}
       {/* <CategoriasUpdate categoriaId={1} /> */}
       {/* <MetasCreate /> */}

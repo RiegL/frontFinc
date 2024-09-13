@@ -8,6 +8,7 @@ import { MetasCreate } from "../../../components/Metas/MetasCreate";
 import { MetasUpdate } from "../../../components/Metas/MetasUpdate";
 import { TransacoesCreate } from "../../../components/Transacoes/TransacoesCreate";
 import { TransacoesUpdate } from "../../../components/Transacoes/TransacoesUpdate";
+import Chart from "@/components/Charts";
 
 export const DashboardPage = () => {
 
@@ -33,12 +34,13 @@ export const DashboardPage = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      <CategoriasCreate />  
+      {/* <CategoriasCreate />   */}
       {/* <CategoriasUpdate categoriaId={1} /> */}
-      <MetasCreate />
+      {/* <MetasCreate /> */}
       {/* <MetasUpdate metaId={6}/> */}
-      <TransacoesCreate/>
+      {/* <TransacoesCreate/> */}
       {/* <TransacoesUpdate metaId={9}/> */}
+      <Chart/>
     </div>
   );
 };

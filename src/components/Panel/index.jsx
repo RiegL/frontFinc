@@ -12,6 +12,7 @@ export const Panel = () => {
   const [despesas, setDespesas] = useState(0);
   const [receitas, setReceitas] = useState(0);
   const [saldo, setSaldo] = useState(0);
+  const [progressoMeta, setProgressoMeta] = useState(0);
 
   useEffect(() => {
     const getTransacao = async () => {
@@ -23,19 +24,16 @@ export const Panel = () => {
 
         const transacoesData = response.data.data;
 
-        // Soma as transações por tipo (despesa e receita)
         const despesasTotal = transacoesData
           .filter((transacao) => transacao.tipo === "Despesa")
-          .reduce((acc, curr) => acc + curr.valor, 0);
+          .reduce((acc, curr) => acc + curr.valor / 100, 0); // Divide por 100
 
         const receitasTotal = transacoesData
           .filter((transacao) => transacao.tipo === "Receita")
-          .reduce((acc, curr) => acc + curr.valor, 0);
+          .reduce((acc, curr) => acc + curr.valor / 100, 0); // Divide por 100
 
-        // Calcula o saldo (receitas - despesas)
         const saldoTotal = receitasTotal - despesasTotal;
 
-        // Atualiza os estados
         setDespesas(despesasTotal);
         setReceitas(receitasTotal);
         setSaldo(saldoTotal);
@@ -45,9 +43,14 @@ export const Panel = () => {
     };
 
     getTransacao();
-  }, []);
+  }, []);//
 
-  // Função para formatar os valores em moeda brasileira (R$)
+  const handleMetaChange = (metaValue) => {
+    const metaValueAdjusted = metaValue / 100;
+    const progresso = (saldo / metaValueAdjusted) * 100;
+    setProgressoMeta(progresso.toFixed(2)); 
+  };//mando para a meta em porcentagem
+
   const formatarMoeda = (valor) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -67,7 +70,7 @@ export const Panel = () => {
               />
             }
             title="Saldo Atual"
-            value={formatarMoeda(saldo)} // Exibe o saldo formatado como moeda
+            value={formatarMoeda(saldo)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -79,7 +82,7 @@ export const Panel = () => {
               />
             }
             title="Despesas"
-            value={formatarMoeda(despesas)} // Exibe as despesas formatadas como moeda
+            value={formatarMoeda(despesas)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -88,7 +91,7 @@ export const Panel = () => {
               <LocalAtmRoundedIcon fontSize="large" sx={{ color: "#299D91" }} />
             }
             title="Receitas"
-            value={formatarMoeda(receitas)} // Exibe as receitas formatadas como moeda
+            value={formatarMoeda(receitas)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -100,7 +103,9 @@ export const Panel = () => {
               />
             }
             title="Metas"
-            value="R$ 400,00" // Exemplo para metas, você pode atualizar isso depois
+            value={progressoMeta}
+            isMeta
+            onMetaChange={handleMetaChange} // Passa a função de mudança de meta
           />
         </Grid>
       </Grid>

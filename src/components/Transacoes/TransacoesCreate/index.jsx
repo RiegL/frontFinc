@@ -220,17 +220,19 @@ export const TransacoesCreate = () => {
                 </Select>
               </FormControl>
             </DialogContent>
-            <DialogContent 
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            <DialogContent
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      
-                      
-                      label="Data"
-                      onChange={(newValue) => setDataTransacao(newValue)}
-                    />
-                  </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Data"
+                  onChange={(newValue) => setDataTransacao(newValue)}
+                />
+              </LocalizationProvider>
             </DialogContent>
             <DialogContent>
               <Stack alignItems={"center"}>

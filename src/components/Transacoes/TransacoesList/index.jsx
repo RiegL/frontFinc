@@ -25,7 +25,6 @@ export const TransacoesList = () => {
   const [ano, setAno] = useState(""); // Ano selecionado
   const [anos, setAnos] = useState([]); // Anos disponíveis
 
-  
   useEffect(() => {
     const getTransacao = async () => {
       try {
@@ -51,8 +50,8 @@ export const TransacoesList = () => {
       }
     };
     getTransacao();
-  }, []);// Função para obter todas as transações
-  
+  }, []); // Função para obter todas as transações
+
   useEffect(() => {
     let transacoesFiltradas = transacoes;
 
@@ -75,7 +74,7 @@ export const TransacoesList = () => {
     }
 
     setTransacoesTable(transacoesFiltradas); // Atualiza a tabela com os filtros aplicados
-  }, [tipo, ano, transacoes]);// Filtro por tipo (Receitas, Despesas, Todas)
+  }, [tipo, ano, transacoes]); // Filtro por tipo (Receitas, Despesas, Todas)
 
   const Filter = ({ label, isActive, onClick }) => (
     <div
@@ -192,7 +191,11 @@ export const TransacoesList = () => {
                     : "planejado"}
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: "bold" }}>
-                  R$ {(transacao.valor / 100).toFixed(2)}
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(transacao.valor / 100)}{" "}
+                  {/* Converte e formata o valor em reais */}
                 </TableCell>
               </TableRow>
             ))}

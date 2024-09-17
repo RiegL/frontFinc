@@ -54,7 +54,7 @@ export default function Menu({ children }) {
           }}
           variant="h5"
         >
-          YOURfinance.IO
+          LEOfinance.IO
         </Typography>{" "}
         <Box
           sx={{
